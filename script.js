@@ -219,14 +219,13 @@ function setupBookingPage() {
 
     try {
       if (submitBtn) submitBtn.disabled = true;
-      const response = await fetch('https://script.google.com/macros/s/AKfycbyZIWuHd1rmmnddbZMANdD4Cj3S0mx13Z_a63Xfae3koPhYH1ayPzaby4_1le4fvNEs9Q/exec', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(payload)
-      });
-
+      const response = await fetch('https://script.google.com/macros/s/AKfycbwPuaKDvTEEHdfQc-0M-jYGNK5a2b9PFTzI68eJSvlGM9cT-lNmdDNiJMtcALiN-ZAz0Q/exec', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(payload)
+});
       if (!response.ok) {
         throw new Error(`Submission failed with status ${response.status}`);
       }
