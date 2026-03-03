@@ -219,7 +219,7 @@ function setupBookingPage() {
 
     try {
       if (submitBtn) submitBtn.disabled = true;
-      const response = await fetch('https://script.google.com/macros/s/AKfycbwPuaKDvTEEHdfQc-0M-jYGNK5a2b9PFTzI68eJSvlGM9cT-lNmdDNiJMtcALiN-ZAz0Q/exec', {
+      const response = await fetch('https://script.google.com/macros/s/AKfycbzYKVnmtJ4QsHRRrhlzRZVePc1Yrx_1tlzYPbnP-rd-L2IyCaToV3SMorrbAr6CE2FmqQ/exec', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json'
