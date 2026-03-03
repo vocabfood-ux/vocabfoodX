@@ -174,13 +174,11 @@ function setupBookingPage() {
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
+
     const state = getMultiStepBookingState(form);
     const submitBtn = form.querySelector('button[type="submit"]');
 
     const payload = {
-      name: state.name,
-      phone: state.phone,
-      email: state.email,
       eventType: state.eventType,
       date: state.date,
       time: state.time,
@@ -188,59 +186,35 @@ function setupBookingPage() {
       guests: state.headcount,
       perPlatePrice: state.finalPerPlate,
       totalAmount: state.finalTotal,
-      addOns: state.addOns.map((item) => item.label)
-    };
-
-    // Keep compatibility with existing summary page flow.
-    const summaryPayload = {
-      state: {
-        name: state.name,
-        phone: state.phone,
-        email: state.email,
-        eventType: state.eventType,
-        date: state.date,
-        time: state.time,
-        location: state.location,
-        distanceKm: 0,
-        headcount: state.headcount,
-        selectedMenu: state.addOns.map((item) => item.key)
-      },
-      breakdown: {
-        base: state.basePerPlate * state.headcount,
-        menuCost: state.addOnPerPlate * state.headcount,
-        subtotal: state.finalTotal,
-        discount: 0,
-        surcharge: 0,
-        distanceCharge: 0,
-        total: state.finalTotal,
-        discountRate: 0
-      }
+      name: state.name,
+      phone: state.phone,
+      email: state.email,
+      addOns: state.addOns.map((item) => item.label).join(", ")
     };
 
     try {
       if (submitBtn) submitBtn.disabled = true;
+
       const response = await fetch('https://script.google.com/macros/s/AKfycbzYKVnmtJ4QsHRRrhlzRZVePc1Yrx_1tlzYPbnP-rd-L2IyCaToV3SMorrbAr6CE2FmqQ/exec', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify(payload)
-});
-      if (!response.ok) {
-        throw new Error(`Submission failed with status ${response.status}`);
+        method: 'POST',
+        body: new URLSearchParams(payload)
+      });
+
+      const text = await response.text();
+
+      if (!response.ok || text !== "success") {
+        throw new Error("Server error");
       }
 
-      localStorage.setItem('vocabfoodBooking', JSON.stringify(summaryPayload));
-      alert('Booking request submitted successfully!');
+      alert("Booking request submitted successfully!");
       form.reset();
-      const confirmMsg = document.querySelector('#bookingConfirmMsg');
-      if (confirmMsg) confirmMsg.textContent = '';
       renderPricing();
       reviewSummary.innerHTML = '';
       showStep(1);
+
     } catch (error) {
-      console.error('Booking submission error:', error);
-      alert('Unable to submit booking request right now. Please try again.');
+      console.error("Booking submission error:", error);
+      alert("Unable to submit booking request right now. Please try again.");
     } finally {
       if (submitBtn) submitBtn.disabled = false;
     }
