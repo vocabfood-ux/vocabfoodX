@@ -1,5 +1,1145 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Book Catering Online | VocabFood</title><meta name="description" content="Book catering online in Nagpur with VocabFood. Fill event details, select menu items, and get instant live pricing before confirming your order."><meta name="keywords" content="book catering online Nagpur, catering booking form, VocabFood event booking, wedding catering booking"><link rel="icon" href="/favicon.ico" type="image/x-icon"><meta property="og:title" content="Book Catering Online | VocabFood"><meta property="og:description" content="Submit your event details, select dishes, and see live pricing before confirming with VocabFood."><meta property="og:type" content="website"><meta property="og:url" content="https://www.vocabfood.com/booking.html"><meta property="og:image" content="https://www.vocabfood.com/assets/og-booking.jpg"><meta property="og:site_name" content="VocabFood"><script type="application/ld+json">{"@context":"https://schema.org","@type":"LocalBusiness","name":"VocabFood","telephone":"+91-7028255991","email":"vocabfood@gmail.com","address":{"@type":"PostalAddress","streetAddress":"Office wadi","addressLocality":"Nagpur","addressRegion":"Maharashtra","addressCountry":"IN"}}</script><link rel="stylesheet" href="style.css"></head><body>
-<header class="site-header"><nav class="navbar container" aria-label="Primary"><a class="brand" href="index.html"><img src="logo.svg" alt="VocabFood logo" class="brand-logo"><span>VocabFood</span></a><button class="nav-toggle" aria-label="Toggle Menu">☰</button><div class="nav-links"><a href="index.html">Home</a><a href="about.html">About</a><a href="how-it-works.html">How it Works</a><a href="menu.html">Menu</a><a href="pricing.html">Pricing</a><a class="active" href="booking.html">Booking</a><a href="order-summary.html">Order Summary</a><a href="contact.html">Contact</a><a href="partner.html">Partner</a></div></nav></header>
-<main><section><div class="container"><h1>Book Catering Online in Nagpur</h1><form id="bookingForm" action="#"><article id="bookingStep1" class="card"><h2>Step 1: Event Details</h2><div class="form-grid"><div class="form-group"><label for="eventType">Event Type</label><select id="eventType" name="eventType" required><option value="Corporate Event">Corporate Event</option><option value="College Event">College Event</option><option value="Small Function">Small Function</option></select></div><div class="form-group"><label for="date">Event Date</label><input id="date" type="date" name="date" required></div><div class="form-group"><label for="time">Event Time</label><input id="time" type="time" name="time" required></div><div class="form-group"><label for="location">Event Location</label><input id="location" name="location" required></div><div class="form-group full"><label for="headcount">Number of Guests</label><input id="headcount" name="headcount" type="number" min="1" value="50" required></div><div class="form-group full"><button class="btn" id="nextToStep2" type="button">Next</button></div></div></article><article id="bookingStep2" class="card" hidden><h2>Step 2: Menu & Dynamic Pricing</h2><div class="form-grid"><div class="form-group full"><label><input type="checkbox" name="addons" value="premium_dessert" data-label="Premium Dessert" data-price="20"> Premium Dessert (+₹20 per plate)</label></div><div class="form-group full"><label><input type="checkbox" name="addons" value="special_starter" data-label="Special Starter" data-price="15"> Special Starter (+₹15 per plate)</label></div><div class="form-group full"><label><input type="checkbox" name="addons" value="live_counter" data-label="Live Counter" data-price="25"> Live Counter (+₹25 per plate)</label></div><div class="full price-box"><h3>Pricing Summary</h3><div id="priceSummary"></div></div><div class="form-group"><button class="btn btn-secondary" id="backToStep1" type="button">Back</button></div><div class="form-group"><button class="btn" id="nextToStep3" type="button">Next</button></div></div></article><article id="bookingStep3" class="card" hidden><h2>Step 3: Review & Confirm</h2><div id="reviewSummary" class="price-box"></div><div class="form-grid mt-1"><div class="form-group"><label for="name">Name</label><input id="name" name="name" required></div><div class="form-group"><label for="phone">Phone</label><input id="phone" name="phone" required></div><div class="form-group full"><label for="email">Email</label><input id="email" type="email" name="email" required></div><div class="form-group full"><label for="instructions">Special instructions</label><textarea id="instructions" name="instructions" placeholder="Add service preferences, dietary notes, or setup details"></textarea></div><div class="form-group"><button class="btn btn-secondary" id="backToStep2" type="button">Back</button></div><div class="form-group"><button class="btn" type="submit">Confirm Booking Request</button></div></div><p class="notice">No advance payment required. Our team will contact you shortly.</p><p class="notice" id="bookingConfirmMsg"></p></article></form></div></section></main>
-<footer class="site-footer"><div class="container footer-grid"><div><h3 class="footer-title">VocabFood</h3><p>Focus on Movement we handle meal</p><p>Office wadi Nagpur, Maharashtra, India</p></div><div><h3 class="footer-title">Quick Links</h3><ul class="footer-links"><li><a href="index.html">Home</a></li><li><a href="menu.html">Menu</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="contact.html">Contact</a></li><li><a href="partner.html">Partner</a></li></ul></div><div><h3 class="footer-title">Contact</h3><p>Phone: <a href="tel:7028255991">7028255991</a></p><p>Email: <a href="mailto:vocabfood@gmail.com">vocabfood@gmail.com</a></p><p>Early support: <a href="mailto:ashutoshyadav@gmail.com">ashutoshyadav@gmail.com</a></p><p><a href="https://wa.me/917028255991" target="_blank" rel="noopener">WhatsApp Support</a></p></div></div><div class="container footer-bottom">© 2026 VocabFood. All rights reserved.</div></footer>
-<script src="script.js"></script></body></html>
+import { useState } from 'react';
+import { 
+  Calendar, Clock, MapPin, Users, ChevronRight, ChevronLeft, 
+  Check, Utensils, Sparkles, ChefHat, Coffee, Phone, Mail, 
+  User, FileText, IndianRupee, PartyPopper, Building2, GraduationCap,
+  Home, Heart
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
+import { toast } from 'sonner';
+import { motion, AnimatePresence } from 'framer-motion';
+
+// Types
+interface MenuItem {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  category: string;
+  image: string;
+  popular?: boolean;
+}
+
+interface Addon {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  icon: React.ReactNode;
+}
+
+interface BookingData {
+  eventType: string;
+  date: string;
+  time: string;
+  location: string;
+  headcount: number;
+  selectedMenu: string[];
+  addons: string[];
+  name: string;
+  phone: string;
+  email: string;
+  instructions: string;
+}
+
+// Menu Data
+const menuItems: MenuItem[] = [
+  {
+    id: 'starter-basic',
+    name: 'Classic Starter Package',
+    description: 'Paneer Tikka, Veg Pakora, Chicken Kebab',
+    price: 80,
+    category: 'starter',
+    image: '/starter.jpg',
+    popular: true
+  },
+  {
+    id: 'starter-premium',
+    name: 'Premium Starter Package',
+    description: 'Assorted Tandoori Platter with 8 varieties',
+    price: 120,
+    category: 'starter',
+    image: '/starter.jpg'
+  },
+  {
+    id: 'main-veg',
+    name: 'Vegetarian Main Course',
+    description: 'Dal Makhani, Paneer Butter Masala, Mixed Veg, Jeera Rice',
+    price: 150,
+    category: 'main',
+    image: '/main-course.jpg',
+    popular: true
+  },
+  {
+    id: 'main-nonveg',
+    name: 'Non-Veg Main Course',
+    description: 'Butter Chicken, Mutton Curry, Fish Curry, Biryani',
+    price: 200,
+    category: 'main',
+    image: '/main-course.jpg'
+  },
+  {
+    id: 'bread-basic',
+    name: 'Basic Bread Basket',
+    description: 'Naan, Roti, Laccha Paratha',
+    price: 40,
+    category: 'bread',
+    image: '/breads.jpg'
+  },
+  {
+    id: 'bread-premium',
+    name: 'Premium Bread Selection',
+    description: 'Assorted Naans, Kulcha, Paratha varieties',
+    price: 60,
+    category: 'bread',
+    image: '/breads.jpg',
+    popular: true
+  },
+  {
+    id: 'dessert-basic',
+    name: 'Classic Dessert',
+    description: 'Gulab Jamun, Ice Cream',
+    price: 50,
+    category: 'dessert',
+    image: '/dessert.jpg'
+  },
+  {
+    id: 'dessert-premium',
+    name: 'Premium Dessert Platter',
+    description: 'Rasmalai, Gulab Jamun, Kheer, Ice Cream',
+    price: 80,
+    category: 'dessert',
+    image: '/dessert.jpg',
+    popular: true
+  },
+  {
+    id: 'beverage-basic',
+    name: 'Welcome Drinks',
+    description: 'Soft drinks, Lemonade, Masala Chaas',
+    price: 30,
+    category: 'beverage',
+    image: '/beverages.jpg'
+  },
+  {
+    id: 'beverage-premium',
+    name: 'Premium Beverages',
+    description: 'Mango Lassi, Fresh Juices, Masala Chai, Coffee',
+    price: 50,
+    category: 'beverage',
+    image: '/beverages.jpg'
+  }
+];
+
+const addons: Addon[] = [
+  {
+    id: 'live-counter',
+    name: 'Live Counter Station',
+    description: 'Dosa, Chaat, or Pasta live station with chef',
+    price: 3000,
+    icon: <ChefHat className="w-5 h-5" />
+  },
+  {
+    id: 'premium-dessert',
+    name: 'Premium Dessert Counter',
+    description: 'Additional dessert varieties with live presentation',
+    price: 2500,
+    icon: <Sparkles className="w-5 h-5" />
+  },
+  {
+    id: 'decor-setup',
+    name: 'Buffet Decor Setup',
+    description: 'Elegant buffet table decoration and lighting',
+    price: 2000,
+    icon: <PartyPopper className="w-5 h-5" />
+  },
+  {
+    id: 'service-staff',
+    name: 'Additional Service Staff',
+    description: 'Extra waiters for better service (per 5 staff)',
+    price: 1500,
+    icon: <Users className="w-5 h-5" />
+  }
+];
+
+const eventTypes = [
+  { id: 'corporate', name: 'Corporate Event', icon: <Building2 className="w-5 h-5" /> },
+  { id: 'college', name: 'College Event', icon: <GraduationCap className="w-5 h-5" /> },
+  { id: 'wedding', name: 'Wedding Function', icon: <Heart className="w-5 h-5" /> },
+  { id: 'birthday', name: 'Birthday Party', icon: <PartyPopper className="w-5 h-5" /> },
+  { id: 'small', name: 'Small Function', icon: <Home className="w-5 h-5" /> },
+  { id: 'other', name: 'Other Event', icon: <Calendar className="w-5 h-5" /> }
+];
+
+// Animation variants
+const fadeInUp = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -20 }
+};
+
+const staggerContainer = {
+  animate: {
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+};
+
+export default function App() {
+  const [currentStep, setCurrentStep] = useState(1);
+  const [bookingData, setBookingData] = useState<BookingData>({
+    eventType: 'corporate',
+    date: '',
+    time: '',
+    location: '',
+    headcount: 50,
+    selectedMenu: [],
+    addons: [],
+    name: '',
+    phone: '',
+    email: '',
+    instructions: ''
+  });
+
+  const totalSteps = 4;
+
+  // Calculate pricing
+  const calculatePricing = () => {
+    const basePricePerPlate = bookingData.selectedMenu.reduce((total, itemId) => {
+      const item = menuItems.find(m => m.id === itemId);
+      return total + (item?.price || 0);
+    }, 0);
+
+    const plateTotal = basePricePerPlate * bookingData.headcount;
+    
+    const addonsTotal = bookingData.addons.reduce((total, addonId) => {
+      const addon = addons.find(a => a.id === addonId);
+      return total + (addon?.price || 0);
+    }, 0);
+
+    const subtotal = plateTotal + addonsTotal;
+    const gst = subtotal * 0.18;
+    const total = subtotal + gst;
+
+    return {
+      basePricePerPlate,
+      plateTotal,
+      addonsTotal,
+      subtotal,
+      gst,
+      total
+    };
+  };
+
+  const pricing = calculatePricing();
+
+  // Validation
+  const isStepValid = () => {
+    switch (currentStep) {
+      case 1:
+        return bookingData.eventType && bookingData.date && bookingData.time && bookingData.location && bookingData.headcount >= 10;
+      case 2:
+        return bookingData.selectedMenu.length > 0;
+      case 3:
+        return true;
+      case 4:
+        return bookingData.name && bookingData.phone && bookingData.email;
+      default:
+        return false;
+    }
+  };
+
+  const handleNext = () => {
+    if (!isStepValid()) {
+      toast.error('Please fill all required fields');
+      return;
+    }
+    if (currentStep < totalSteps) {
+      setCurrentStep(currentStep + 1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  const handleBack = () => {
+    if (currentStep > 1) {
+      setCurrentStep(currentStep - 1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!isStepValid()) {
+      toast.error('Please fill all required fields');
+      return;
+    }
+    toast.success('Booking request submitted successfully! We will contact you shortly.');
+    console.log('Booking Data:', bookingData);
+    console.log('Pricing:', pricing);
+  };
+
+  const toggleMenuItem = (itemId: string) => {
+    setBookingData(prev => ({
+      ...prev,
+      selectedMenu: prev.selectedMenu.includes(itemId)
+        ? prev.selectedMenu.filter(id => id !== itemId)
+        : [...prev.selectedMenu, itemId]
+    }));
+  };
+
+  const toggleAddon = (addonId: string) => {
+    setBookingData(prev => ({
+      ...prev,
+      addons: prev.addons.includes(addonId)
+        ? prev.addons.filter(id => id !== addonId)
+        : [...prev.addons, addonId]
+    }));
+  };
+
+  const getMenuItemsByCategory = (category: string) => {
+    return menuItems.filter(item => item.category === category);
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-orange-50">
+      {/* Header */}
+      <header className="bg-white shadow-sm sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            <div className="flex items-center gap-2">
+              <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center">
+                <Utensils className="w-5 h-5 text-white" />
+              </div>
+              <span className="text-xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
+                VocabFood
+              </span>
+            </div>
+            <nav className="hidden md:flex items-center gap-6">
+              <a href="#" className="text-gray-600 hover:text-orange-600 transition-colors">Home</a>
+              <a href="#" className="text-gray-600 hover:text-orange-600 transition-colors">Menu</a>
+              <a href="#" className="text-gray-600 hover:text-orange-600 transition-colors">Pricing</a>
+              <a href="#" className="text-orange-600 font-medium">Booking</a>
+              <a href="#" className="text-gray-600 hover:text-orange-600 transition-colors">Contact</a>
+            </nav>
+          </div>
+        </div>
+      </header>
+
+      {/* Hero Section */}
+      <div className="relative h-64 md:h-80 overflow-hidden">
+        <img 
+          src="/hero-catering.jpg" 
+          alt="Catering" 
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/40 flex items-center">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <h1 className="text-3xl md:text-5xl font-bold text-white mb-2">
+                Book Catering Online
+              </h1>
+              <p className="text-white/80 text-lg md:text-xl">
+                Premium catering services in Nagpur for all your events
+              </p>
+            </motion.div>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Progress Indicator */}
+        <div className="mb-8">
+          <div className="flex items-center justify-between max-w-3xl mx-auto">
+            {[1, 2, 3, 4].map((step, index) => (
+              <div key={step} className="flex items-center flex-1">
+                <motion.div
+                  initial={false}
+                  animate={{
+                    backgroundColor: currentStep >= step ? '#f97316' : '#e5e7eb',
+                    scale: currentStep === step ? 1.1 : 1
+                  }}
+                  className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm transition-all duration-300 ${
+                    currentStep >= step ? 'text-white shadow-lg shadow-orange-500/30' : 'text-gray-500'
+                  }`}
+                >
+                  {currentStep > step ? <Check className="w-5 h-5" /> : step}
+                </motion.div>
+                {index < 3 && (
+                  <div className={`flex-1 h-1 mx-2 rounded-full transition-all duration-500 ${
+                    currentStep > step ? 'bg-orange-500' : 'bg-gray-200'
+                  }`} />
+                )}
+              </div>
+            ))}
+          </div>
+          <div className="flex justify-between max-w-3xl mx-auto mt-2 text-sm text-gray-600">
+            <span className="text-center w-20 -ml-4">Event Details</span>
+            <span className="text-center w-20">Menu</span>
+            <span className="text-center w-20">Add-ons</span>
+            <span className="text-center w-20 -mr-4">Confirm</span>
+          </div>
+        </div>
+
+        <form onSubmit={handleSubmit}>
+          <AnimatePresence mode="wait">
+            {/* Step 1: Event Details */}
+            {currentStep === 1 && (
+              <motion.div
+                key="step1"
+                variants={fadeInUp}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                transition={{ duration: 0.3 }}
+              >
+                <Card className="max-w-3xl mx-auto shadow-xl border-0">
+                  <CardHeader className="bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-t-lg">
+                    <CardTitle className="text-2xl flex items-center gap-2">
+                      <Calendar className="w-6 h-6" />
+                      Step 1: Event Details
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-6">
+                    <motion.div 
+                      variants={staggerContainer}
+                      initial="initial"
+                      animate="animate"
+                      className="space-y-6"
+                    >
+                      {/* Event Type */}
+                      <motion.div variants={fadeInUp}>
+                        <Label className="text-base font-semibold mb-3 block">Event Type *</Label>
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                          {eventTypes.map((type) => (
+                            <button
+                              key={type.id}
+                              type="button"
+                              onClick={() => setBookingData(prev => ({ ...prev, eventType: type.id }))}
+                              className={`p-4 rounded-xl border-2 transition-all duration-300 flex flex-col items-center gap-2 ${
+                                bookingData.eventType === type.id
+                                  ? 'border-orange-500 bg-orange-50 text-orange-700'
+                                  : 'border-gray-200 hover:border-orange-300 hover:bg-orange-50/50'
+                              }`}
+                            >
+                              {type.icon}
+                              <span className="text-sm font-medium">{type.name}</span>
+                            </button>
+                          ))}
+                        </div>
+                      </motion.div>
+
+                      {/* Date & Time */}
+                      <motion.div variants={fadeInUp} className="grid md:grid-cols-2 gap-4">
+                        <div>
+                          <Label htmlFor="date" className="text-base font-semibold mb-2 block">
+                            <Calendar className="w-4 h-4 inline mr-1" />
+                            Event Date *
+                          </Label>
+                          <Input
+                            id="date"
+                            type="date"
+                            value={bookingData.date}
+                            onChange={(e) => setBookingData(prev => ({ ...prev, date: e.target.value }))}
+                            min={new Date().toISOString().split('T')[0]}
+                            className="h-12"
+                            required
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="time" className="text-base font-semibold mb-2 block">
+                            <Clock className="w-4 h-4 inline mr-1" />
+                            Event Time *
+                          </Label>
+                          <Input
+                            id="time"
+                            type="time"
+                            value={bookingData.time}
+                            onChange={(e) => setBookingData(prev => ({ ...prev, time: e.target.value }))}
+                            className="h-12"
+                            required
+                          />
+                        </div>
+                      </motion.div>
+
+                      {/* Location */}
+                      <motion.div variants={fadeInUp}>
+                        <Label htmlFor="location" className="text-base font-semibold mb-2 block">
+                          <MapPin className="w-4 h-4 inline mr-1" />
+                          Event Location *
+                        </Label>
+                        <Input
+                          id="location"
+                          placeholder="Enter complete address in Nagpur"
+                          value={bookingData.location}
+                          onChange={(e) => setBookingData(prev => ({ ...prev, location: e.target.value }))}
+                          className="h-12"
+                          required
+                        />
+                      </motion.div>
+
+                      {/* Headcount */}
+                      <motion.div variants={fadeInUp}>
+                        <Label htmlFor="headcount" className="text-base font-semibold mb-2 block">
+                          <Users className="w-4 h-4 inline mr-1" />
+                          Number of Guests *
+                        </Label>
+                        <div className="flex items-center gap-4">
+                          <Input
+                            id="headcount"
+                            type="number"
+                            min={10}
+                            max={1000}
+                            value={bookingData.headcount}
+                            onChange={(e) => setBookingData(prev => ({ ...prev, headcount: parseInt(e.target.value) || 10 }))}
+                            className="h-12 w-32"
+                            required
+                          />
+                          <span className="text-gray-600">Minimum 10 guests</span>
+                        </div>
+                      </motion.div>
+                    </motion.div>
+
+                    <div className="mt-8 flex justify-end">
+                      <Button
+                        type="button"
+                        onClick={handleNext}
+                        className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white px-8 py-6 text-lg rounded-xl shadow-lg shadow-orange-500/30 transition-all hover:scale-105"
+                      >
+                        Next Step
+                        <ChevronRight className="w-5 h-5 ml-2" />
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            )}
+
+            {/* Step 2: Menu Selection */}
+            {currentStep === 2 && (
+              <motion.div
+                key="step2"
+                variants={fadeInUp}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                transition={{ duration: 0.3 }}
+              >
+                <Card className="max-w-4xl mx-auto shadow-xl border-0">
+                  <CardHeader className="bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-t-lg">
+                    <CardTitle className="text-2xl flex items-center gap-2">
+                      <Utensils className="w-6 h-6" />
+                      Step 2: Select Your Menu
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-6">
+                    <motion.div 
+                      variants={staggerContainer}
+                      initial="initial"
+                      animate="animate"
+                      className="space-y-8"
+                    >
+                      {/* Starters */}
+                      <motion.div variants={fadeInUp}>
+                        <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                          <Sparkles className="w-5 h-5 text-orange-500" />
+                          Starters
+                        </h3>
+                        <div className="grid md:grid-cols-2 gap-4">
+                          {getMenuItemsByCategory('starter').map((item) => (
+                            <div
+                              key={item.id}
+                              onClick={() => toggleMenuItem(item.id)}
+                              className={`relative cursor-pointer rounded-xl border-2 overflow-hidden transition-all duration-300 ${
+                                bookingData.selectedMenu.includes(item.id)
+                                  ? 'border-orange-500 shadow-lg shadow-orange-500/20'
+                                  : 'border-gray-200 hover:border-orange-300'
+                              }`}
+                            >
+                              <div className="flex">
+                                <img src={item.image} alt={item.name} className="w-24 h-24 object-cover" />
+                                <div className="p-4 flex-1">
+                                  <div className="flex items-start justify-between">
+                                    <div>
+                                      <h4 className="font-semibold text-gray-800">{item.name}</h4>
+                                      <p className="text-sm text-gray-600 mt-1">{item.description}</p>
+                                      <p className="text-orange-600 font-bold mt-2">₹{item.price}/plate</p>
+                                    </div>
+                                    {item.popular && (
+                                      <Badge className="bg-orange-500 text-white text-xs">Popular</Badge>
+                                    )}
+                                  </div>
+                                </div>
+                                <div className="p-4 flex items-center">
+                                  <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${
+                                    bookingData.selectedMenu.includes(item.id)
+                                      ? 'bg-orange-500 border-orange-500'
+                                      : 'border-gray-300'
+                                  }`}>
+                                    {bookingData.selectedMenu.includes(item.id) && <Check className="w-4 h-4 text-white" />}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </motion.div>
+
+                      {/* Main Course */}
+                      <motion.div variants={fadeInUp}>
+                        <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                          <ChefHat className="w-5 h-5 text-orange-500" />
+                          Main Course
+                        </h3>
+                        <div className="grid md:grid-cols-2 gap-4">
+                          {getMenuItemsByCategory('main').map((item) => (
+                            <div
+                              key={item.id}
+                              onClick={() => toggleMenuItem(item.id)}
+                              className={`relative cursor-pointer rounded-xl border-2 overflow-hidden transition-all duration-300 ${
+                                bookingData.selectedMenu.includes(item.id)
+                                  ? 'border-orange-500 shadow-lg shadow-orange-500/20'
+                                  : 'border-gray-200 hover:border-orange-300'
+                              }`}
+                            >
+                              <div className="flex">
+                                <img src={item.image} alt={item.name} className="w-24 h-24 object-cover" />
+                                <div className="p-4 flex-1">
+                                  <div className="flex items-start justify-between">
+                                    <div>
+                                      <h4 className="font-semibold text-gray-800">{item.name}</h4>
+                                      <p className="text-sm text-gray-600 mt-1">{item.description}</p>
+                                      <p className="text-orange-600 font-bold mt-2">₹{item.price}/plate</p>
+                                    </div>
+                                    {item.popular && (
+                                      <Badge className="bg-orange-500 text-white text-xs">Popular</Badge>
+                                    )}
+                                  </div>
+                                </div>
+                                <div className="p-4 flex items-center">
+                                  <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${
+                                    bookingData.selectedMenu.includes(item.id)
+                                      ? 'bg-orange-500 border-orange-500'
+                                      : 'border-gray-300'
+                                  }`}>
+                                    {bookingData.selectedMenu.includes(item.id) && <Check className="w-4 h-4 text-white" />}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </motion.div>
+
+                      {/* Breads */}
+                      <motion.div variants={fadeInUp}>
+                        <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                          <Coffee className="w-5 h-5 text-orange-500" />
+                          Indian Breads
+                        </h3>
+                        <div className="grid md:grid-cols-2 gap-4">
+                          {getMenuItemsByCategory('bread').map((item) => (
+                            <div
+                              key={item.id}
+                              onClick={() => toggleMenuItem(item.id)}
+                              className={`relative cursor-pointer rounded-xl border-2 overflow-hidden transition-all duration-300 ${
+                                bookingData.selectedMenu.includes(item.id)
+                                  ? 'border-orange-500 shadow-lg shadow-orange-500/20'
+                                  : 'border-gray-200 hover:border-orange-300'
+                              }`}
+                            >
+                              <div className="flex">
+                                <img src={item.image} alt={item.name} className="w-24 h-24 object-cover" />
+                                <div className="p-4 flex-1">
+                                  <div className="flex items-start justify-between">
+                                    <div>
+                                      <h4 className="font-semibold text-gray-800">{item.name}</h4>
+                                      <p className="text-sm text-gray-600 mt-1">{item.description}</p>
+                                      <p className="text-orange-600 font-bold mt-2">₹{item.price}/plate</p>
+                                    </div>
+                                    {item.popular && (
+                                      <Badge className="bg-orange-500 text-white text-xs">Popular</Badge>
+                                    )}
+                                  </div>
+                                </div>
+                                <div className="p-4 flex items-center">
+                                  <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${
+                                    bookingData.selectedMenu.includes(item.id)
+                                      ? 'bg-orange-500 border-orange-500'
+                                      : 'border-gray-300'
+                                  }`}>
+                                    {bookingData.selectedMenu.includes(item.id) && <Check className="w-4 h-4 text-white" />}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </motion.div>
+
+                      {/* Desserts */}
+                      <motion.div variants={fadeInUp}>
+                        <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                          <Sparkles className="w-5 h-5 text-orange-500" />
+                          Desserts
+                        </h3>
+                        <div className="grid md:grid-cols-2 gap-4">
+                          {getMenuItemsByCategory('dessert').map((item) => (
+                            <div
+                              key={item.id}
+                              onClick={() => toggleMenuItem(item.id)}
+                              className={`relative cursor-pointer rounded-xl border-2 overflow-hidden transition-all duration-300 ${
+                                bookingData.selectedMenu.includes(item.id)
+                                  ? 'border-orange-500 shadow-lg shadow-orange-500/20'
+                                  : 'border-gray-200 hover:border-orange-300'
+                              }`}
+                            >
+                              <div className="flex">
+                                <img src={item.image} alt={item.name} className="w-24 h-24 object-cover" />
+                                <div className="p-4 flex-1">
+                                  <div className="flex items-start justify-between">
+                                    <div>
+                                      <h4 className="font-semibold text-gray-800">{item.name}</h4>
+                                      <p className="text-sm text-gray-600 mt-1">{item.description}</p>
+                                      <p className="text-orange-600 font-bold mt-2">₹{item.price}/plate</p>
+                                    </div>
+                                    {item.popular && (
+                                      <Badge className="bg-orange-500 text-white text-xs">Popular</Badge>
+                                    )}
+                                  </div>
+                                </div>
+                                <div className="p-4 flex items-center">
+                                  <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${
+                                    bookingData.selectedMenu.includes(item.id)
+                                      ? 'bg-orange-500 border-orange-500'
+                                      : 'border-gray-300'
+                                  }`}>
+                                    {bookingData.selectedMenu.includes(item.id) && <Check className="w-4 h-4 text-white" />}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </motion.div>
+
+                      {/* Beverages */}
+                      <motion.div variants={fadeInUp}>
+                        <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                          <Coffee className="w-5 h-5 text-orange-500" />
+                          Beverages
+                        </h3>
+                        <div className="grid md:grid-cols-2 gap-4">
+                          {getMenuItemsByCategory('beverage').map((item) => (
+                            <div
+                              key={item.id}
+                              onClick={() => toggleMenuItem(item.id)}
+                              className={`relative cursor-pointer rounded-xl border-2 overflow-hidden transition-all duration-300 ${
+                                bookingData.selectedMenu.includes(item.id)
+                                  ? 'border-orange-500 shadow-lg shadow-orange-500/20'
+                                  : 'border-gray-200 hover:border-orange-300'
+                              }`}
+                            >
+                              <div className="flex">
+                                <img src={item.image} alt={item.name} className="w-24 h-24 object-cover" />
+                                <div className="p-4 flex-1">
+                                  <div className="flex items-start justify-between">
+                                    <div>
+                                      <h4 className="font-semibold text-gray-800">{item.name}</h4>
+                                      <p className="text-sm text-gray-600 mt-1">{item.description}</p>
+                                      <p className="text-orange-600 font-bold mt-2">₹{item.price}/plate</p>
+                                    </div>
+                                    {item.popular && (
+                                      <Badge className="bg-orange-500 text-white text-xs">Popular</Badge>
+                                    )}
+                                  </div>
+                                </div>
+                                <div className="p-4 flex items-center">
+                                  <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${
+                                    bookingData.selectedMenu.includes(item.id)
+                                      ? 'bg-orange-500 border-orange-500'
+                                      : 'border-gray-300'
+                                  }`}>
+                                    {bookingData.selectedMenu.includes(item.id) && <Check className="w-4 h-4 text-white" />}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </motion.div>
+                    </motion.div>
+
+                    <div className="mt-8 flex justify-between">
+                      <Button
+                        type="button"
+                        onClick={handleBack}
+                        variant="outline"
+                        className="px-6 py-6 text-lg rounded-xl"
+                      >
+                        <ChevronLeft className="w-5 h-5 mr-2" />
+                        Back
+                      </Button>
+                      <Button
+                        type="button"
+                        onClick={handleNext}
+                        className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white px-8 py-6 text-lg rounded-xl shadow-lg shadow-orange-500/30 transition-all hover:scale-105"
+                      >
+                        Next Step
+                        <ChevronRight className="w-5 h-5 ml-2" />
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            )}
+
+            {/* Step 3: Add-ons */}
+            {currentStep === 3 && (
+              <motion.div
+                key="step3"
+                variants={fadeInUp}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                transition={{ duration: 0.3 }}
+              >
+                <Card className="max-w-3xl mx-auto shadow-xl border-0">
+                  <CardHeader className="bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-t-lg">
+                    <CardTitle className="text-2xl flex items-center gap-2">
+                      <Sparkles className="w-6 h-6" />
+                      Step 3: Add-on Services
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-6">
+                    <motion.div 
+                      variants={staggerContainer}
+                      initial="initial"
+                      animate="animate"
+                      className="space-y-4"
+                    >
+                      <p className="text-gray-600 mb-4">Enhance your event with these premium add-ons (optional):</p>
+                      
+                      {addons.map((addon) => (
+                        <motion.div
+                          key={addon.id}
+                          variants={fadeInUp}
+                          onClick={() => toggleAddon(addon.id)}
+                          className={`p-4 rounded-xl border-2 cursor-pointer transition-all duration-300 ${
+                            bookingData.addons.includes(addon.id)
+                              ? 'border-orange-500 bg-orange-50 shadow-lg shadow-orange-500/20'
+                              : 'border-gray-200 hover:border-orange-300 hover:bg-orange-50/30'
+                          }`}
+                        >
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-4">
+                              <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all ${
+                                bookingData.addons.includes(addon.id)
+                                  ? 'bg-orange-500 text-white'
+                                  : 'bg-gray-100 text-gray-600'
+                              }`}>
+                                {addon.icon}
+                              </div>
+                              <div>
+                                <h4 className="font-semibold text-gray-800">{addon.name}</h4>
+                                <p className="text-sm text-gray-600">{addon.description}</p>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-4">
+                              <span className="text-lg font-bold text-orange-600">₹{addon.price}</span>
+                              <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${
+                                bookingData.addons.includes(addon.id)
+                                  ? 'bg-orange-500 border-orange-500'
+                                  : 'border-gray-300'
+                              }`}>
+                                {bookingData.addons.includes(addon.id) && <Check className="w-4 h-4 text-white" />}
+                              </div>
+                            </div>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </motion.div>
+
+                    <div className="mt-8 flex justify-between">
+                      <Button
+                        type="button"
+                        onClick={handleBack}
+                        variant="outline"
+                        className="px-6 py-6 text-lg rounded-xl"
+                      >
+                        <ChevronLeft className="w-5 h-5 mr-2" />
+                        Back
+                      </Button>
+                      <Button
+                        type="button"
+                        onClick={handleNext}
+                        className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white px-8 py-6 text-lg rounded-xl shadow-lg shadow-orange-500/30 transition-all hover:scale-105"
+                      >
+                        Review & Confirm
+                        <ChevronRight className="w-5 h-5 ml-2" />
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            )}
+
+            {/* Step 4: Review & Confirm */}
+            {currentStep === 4 && (
+              <motion.div
+                key="step4"
+                variants={fadeInUp}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                transition={{ duration: 0.3 }}
+              >
+                <div className="grid lg:grid-cols-2 gap-6 max-w-5xl mx-auto">
+                  {/* Review Form */}
+                  <Card className="shadow-xl border-0">
+                    <CardHeader className="bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-t-lg">
+                      <CardTitle className="text-2xl flex items-center gap-2">
+                        <Check className="w-6 h-6" />
+                        Step 4: Your Details
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="p-6">
+                      <motion.div 
+                        variants={staggerContainer}
+                        initial="initial"
+                        animate="animate"
+                        className="space-y-4"
+                      >
+                        <motion.div variants={fadeInUp}>
+                          <Label htmlFor="name" className="text-base font-semibold mb-2 block">
+                            <User className="w-4 h-4 inline mr-1" />
+                            Full Name *
+                          </Label>
+                          <Input
+                            id="name"
+                            placeholder="Enter your full name"
+                            value={bookingData.name}
+                            onChange={(e) => setBookingData(prev => ({ ...prev, name: e.target.value }))}
+                            className="h-12"
+                            required
+                          />
+                        </motion.div>
+
+                        <motion.div variants={fadeInUp}>
+                          <Label htmlFor="phone" className="text-base font-semibold mb-2 block">
+                            <Phone className="w-4 h-4 inline mr-1" />
+                            Phone Number *
+                          </Label>
+                          <Input
+                            id="phone"
+                            type="tel"
+                            placeholder="Enter your phone number"
+                            value={bookingData.phone}
+                            onChange={(e) => setBookingData(prev => ({ ...prev, phone: e.target.value }))}
+                            className="h-12"
+                            required
+                          />
+                        </motion.div>
+
+                        <motion.div variants={fadeInUp}>
+                          <Label htmlFor="email" className="text-base font-semibold mb-2 block">
+                            <Mail className="w-4 h-4 inline mr-1" />
+                            Email Address *
+                          </Label>
+                          <Input
+                            id="email"
+                            type="email"
+                            placeholder="Enter your email"
+                            value={bookingData.email}
+                            onChange={(e) => setBookingData(prev => ({ ...prev, email: e.target.value }))}
+                            className="h-12"
+                            required
+                          />
+                        </motion.div>
+
+                        <motion.div variants={fadeInUp}>
+                          <Label htmlFor="instructions" className="text-base font-semibold mb-2 block">
+                            <FileText className="w-4 h-4 inline mr-1" />
+                            Special Instructions
+                          </Label>
+                          <Textarea
+                            id="instructions"
+                            placeholder="Any dietary requirements, setup preferences, or special requests..."
+                            value={bookingData.instructions}
+                            onChange={(e) => setBookingData(prev => ({ ...prev, instructions: e.target.value }))}
+                            className="min-h-[100px]"
+                          />
+                        </motion.div>
+                      </motion.div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Pricing Summary */}
+                  <Card className="shadow-xl border-0 bg-gradient-to-br from-gray-900 to-gray-800 text-white">
+                    <CardHeader>
+                      <CardTitle className="text-xl flex items-center gap-2">
+                        <IndianRupee className="w-5 h-5" />
+                        Pricing Summary
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="p-6">
+                      <div className="space-y-4">
+                        {/* Event Summary */}
+                        <div className="bg-white/10 rounded-lg p-4">
+                          <h4 className="font-semibold mb-2">Event Details</h4>
+                          <div className="text-sm text-gray-300 space-y-1">
+                            <p><span className="text-gray-400">Type:</span> {eventTypes.find(e => e.id === bookingData.eventType)?.name}</p>
+                            <p><span className="text-gray-400">Date:</span> {bookingData.date || 'Not selected'}</p>
+                            <p><span className="text-gray-400">Time:</span> {bookingData.time || 'Not selected'}</p>
+                            <p><span className="text-gray-400">Guests:</span> {bookingData.headcount} people</p>
+                            <p><span className="text-gray-400">Location:</span> {bookingData.location || 'Not provided'}</p>
+                          </div>
+                        </div>
+
+                        {/* Selected Menu */}
+                        <div>
+                          <h4 className="font-semibold mb-2">Selected Menu</h4>
+                          <div className="space-y-2">
+                            {bookingData.selectedMenu.map(itemId => {
+                              const item = menuItems.find(m => m.id === itemId);
+                              return item ? (
+                                <div key={itemId} className="flex justify-between text-sm">
+                                  <span className="text-gray-300">{item.name}</span>
+                                  <span>₹{item.price} × {bookingData.headcount}</span>
+                                </div>
+                              ) : null;
+                            })}
+                          </div>
+                          <div className="flex justify-between mt-2 pt-2 border-t border-white/20">
+                            <span className="text-gray-300">Menu Subtotal</span>
+                            <span>₹{pricing.plateTotal}</span>
+                          </div>
+                        </div>
+
+                        {/* Add-ons */}
+                        {bookingData.addons.length > 0 && (
+                          <div>
+                            <h4 className="font-semibold mb-2">Add-ons</h4>
+                            <div className="space-y-2">
+                              {bookingData.addons.map(addonId => {
+                                const addon = addons.find(a => a.id === addonId);
+                                return addon ? (
+                                  <div key={addonId} className="flex justify-between text-sm">
+                                    <span className="text-gray-300">{addon.name}</span>
+                                    <span>₹{addon.price}</span>
+                                  </div>
+                                ) : null;
+                              })}
+                            </div>
+                          </div>
+                        )}
+
+                        <Separator className="bg-white/20" />
+
+                        {/* Price Breakdown */}
+                        <div className="space-y-2 text-sm">
+                          <div className="flex justify-between">
+                            <span className="text-gray-300">Subtotal</span>
+                            <span>₹{pricing.subtotal}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span className="text-gray-300">GST (18%)</span>
+                            <span>₹{pricing.gst.toFixed(0)}</span>
+                          </div>
+                        </div>
+
+                        <Separator className="bg-white/20" />
+
+                        {/* Total */}
+                        <div className="flex justify-between items-center">
+                          <span className="text-xl font-bold">Total Amount</span>
+                          <span className="text-3xl font-bold text-orange-400">₹{pricing.total.toFixed(0)}</span>
+                        </div>
+
+                        <p className="text-xs text-gray-400 text-center">
+                          * No advance payment required. Our team will contact you to confirm.
+                        </p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                <div className="max-w-5xl mx-auto mt-8 flex justify-between">
+                  <Button
+                    type="button"
+                    onClick={handleBack}
+                    variant="outline"
+                    className="px-6 py-6 text-lg rounded-xl"
+                  >
+                    <ChevronLeft className="w-5 h-5 mr-2" />
+                    Back
+                  </Button>
+                  <Button
+                    type="submit"
+                    className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white px-10 py-6 text-lg rounded-xl shadow-lg shadow-green-500/30 transition-all hover:scale-105"
+                  >
+                    <Check className="w-5 h-5 mr-2" />
+                    Confirm Booking Request
+                  </Button>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </form>
+      </main>
+
+      {/* Footer */}
+      <footer className="bg-gray-900 text-white mt-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="grid md:grid-cols-3 gap-8">
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center">
+                  <Utensils className="w-5 h-5 text-white" />
+                </div>
+                <span className="text-xl font-bold">VocabFood</span>
+              </div>
+              <p className="text-gray-400">Focus on Movement, we handle the meal.</p>
+              <p className="text-gray-400 mt-2">Office Wadi, Nagpur, Maharashtra, India</p>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-4">Quick Links</h4>
+              <ul className="space-y-2 text-gray-400">
+                <li><a href="#" className="hover:text-orange-400 transition-colors">Home</a></li>
+                <li><a href="#" className="hover:text-orange-400 transition-colors">Menu</a></li>
+                <li><a href="#" className="hover:text-orange-400 transition-colors">Pricing</a></li>
+                <li><a href="#" className="hover:text-orange-400 transition-colors">Contact</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-4">Contact Us</h4>
+              <div className="space-y-2 text-gray-400">
+                <p className="flex items-center gap-2">
+                  <Phone className="w-4 h-4" />
+                  <a href="tel:7028255991" className="hover:text-orange-400 transition-colors">7028255991</a>
+                </p>
+                <p className="flex items-center gap-2">
+                  <Mail className="w-4 h-4" />
+                  <a href="mailto:vocabfood@gmail.com" className="hover:text-orange-400 transition-colors">vocabfood@gmail.com</a>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-500">
+            © 2026 VocabFood. All rights reserved.
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}
