@@ -1,5 +1,759 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Catering Menu Selection | VocabFood Nagpur</title><meta name="description" content="Browse VocabFood's North Indian catering menu with starters, mains, breads, rice, and desserts. Select items and plan your event menu online."><meta name="keywords" content="North Indian catering menu Nagpur, event menu selection, VocabFood menu, wedding catering dishes"><link rel="icon" href="/favicon.ico" type="image/x-icon"><meta property="og:title" content="Catering Menu Selection | VocabFood Nagpur"><meta property="og:description" content="Explore starters, mains, breads, rice, and desserts for your VocabFood catering package."><meta property="og:type" content="website"><meta property="og:url" content="https://www.vocabfood.com/menu.html"><meta property="og:image" content="https://www.vocabfood.com/assets/og-menu.jpg"><meta property="og:site_name" content="VocabFood"><script type="application/ld+json">{"@context":"https://schema.org","@type":"LocalBusiness","name":"VocabFood","telephone":"+91-7028255991","email":"vocabfood@gmail.com","address":{"@type":"PostalAddress","streetAddress":"Office wadi","addressLocality":"Nagpur","addressRegion":"Maharashtra","addressCountry":"IN"}}</script><link rel="stylesheet" href="style.css"></head><body>
-<header class="site-header"><nav class="navbar container" aria-label="Primary"><a class="brand" href="index.html"><img src="logo.svg" alt="VocabFood logo" class="brand-logo"><span>VocabFood</span></a><button class="nav-toggle" aria-label="Toggle Menu">☰</button><div class="nav-links"><a href="index.html">Home</a><a href="about.html">About</a><a href="how-it-works.html">How it Works</a><a class="active" href="menu.html">Menu</a><a href="pricing.html">Pricing</a><a href="booking.html">Booking</a><a href="order-summary.html">Order Summary</a><a href="contact.html">Contact</a><a href="partner.html">Partner</a></div></nav></header>
-<main><section><div class="container"><h1>North Indian Catering Menu in Nagpur</h1><p class="lead">Select dishes to estimate your catering package pricing and move to booking.</p><div id="menuRoot"></div></div></section></main>
-<footer class="site-footer"><div class="container footer-grid"><div><h3 class="footer-title">VocabFood</h3><p>Focus on Movement we handle meal</p><p>Office wadi Nagpur, Maharashtra, India</p></div><div><h3 class="footer-title">Quick Links</h3><ul class="footer-links"><li><a href="index.html">Home</a></li><li><a href="about.html">About</a></li><li><a href="pricing.html">Pricing</a></li><li><a href="booking.html">Booking</a></li><li><a href="contact.html">Contact</a></li></ul></div><div><h3 class="footer-title">Contact</h3><p>Phone: <a href="tel:7028255991">7028255991</a></p><p>Email: <a href="mailto:vocabfood@gmail.com">vocabfood@gmail.com</a></p><p>Early support: <a href="mailto:ashutoshyadav@gmail.com">ashutoshyadav@gmail.com</a></p><p><a href="https://wa.me/917028255991" target="_blank" rel="noopener">WhatsApp Support</a></p></div></div><div class="container footer-bottom">© 2026 VocabFood. All rights reserved.</div></footer>
-<script src="script.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catering Menu Selection | VocabFood Nagpur</title>
+  <meta name="description" content="Browse VocabFood's North Indian catering menu with starters, mains, breads, rice, and desserts. Select items and plan your event menu online.">
+  <meta name="keywords" content="North Indian catering menu Nagpur, event menu selection, VocabFood menu, wedding catering dishes">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <meta property="og:title" content="Catering Menu Selection | VocabFood Nagpur">
+  <meta property="og:description" content="Explore starters, mains, breads, rice, and desserts for your VocabFood catering package.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.vocabfood.com/menu.html">
+  <meta property="og:image" content="https://www.vocabfood.com/assets/og-menu.jpg">
+  <meta property="og:site_name" content="VocabFood">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"LocalBusiness","name":"VocabFood","telephone":"+91-7028255991","email":"vocabfood@gmail.com","address":{"@type":"PostalAddress","streetAddress":"Office wadi","addressLocality":"Nagpur","addressRegion":"Maharashtra","addressCountry":"IN"}}</script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    /* ── Design tokens (mirror index.html) ── */
+    :root {
+      --brand-saffron:  #E8600A;
+      --brand-turmeric: #F5A623;
+      --brand-cream:    #FDF6EC;
+      --brand-dark:     #1A120B;
+      --brand-muted:    #7A6652;
+      --brand-card-bg:  #FFFFFF;
+      --radius-lg:   20px;
+      --radius-pill: 100px;
+      --transition:  0.35s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--brand-cream);
+      color: var(--brand-dark);
+      overflow-x: hidden;
+    }
+
+    /* Grain overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ── HEADER / NAV ── */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(253, 246, 236, 0.85);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(232, 96, 10, 0.12);
+    }
+
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.9rem 1.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      text-decoration: none;
+    }
+
+    .brand-logo { height: 36px; width: auto; }
+
+    .brand span {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.45rem;
+      font-weight: 900;
+      color: var(--brand-saffron);
+      letter-spacing: -0.03em;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.15rem;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--brand-muted);
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      padding: 0.4rem 0.75rem;
+      border-radius: var(--radius-pill);
+      transition: color var(--transition), background var(--transition);
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--brand-saffron);
+      background: rgba(232, 96, 10, 0.08);
+    }
+
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--brand-dark);
+    }
+
+    /* ── PAGE HERO ── */
+    .page-hero {
+      position: relative;
+      padding: 5rem 1.5rem 3.5rem;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .page-hero::before,
+    .page-hero::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+    }
+    .page-hero::before {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(232,96,10,0.15), transparent 70%);
+      top: -160px; right: -120px;
+      animation: drift 8s ease-in-out infinite alternate;
+    }
+    .page-hero::after {
+      width: 340px; height: 340px;
+      background: radial-gradient(circle, rgba(245,166,35,0.12), transparent 70%);
+      bottom: -80px; left: -80px;
+      animation: drift 11s ease-in-out infinite alternate-reverse;
+    }
+
+    @keyframes drift {
+      from { transform: translate(0,0) scale(1); }
+      to   { transform: translate(30px, 20px) scale(1.05); }
+    }
+
+    .page-hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 640px;
+      margin: 0 auto;
+      animation: fadeUp 0.7s ease both;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--brand-saffron);
+      background: rgba(232, 96, 10, 0.10);
+      border: 1px solid rgba(232, 96, 10, 0.20);
+      padding: 0.35rem 0.9rem;
+      border-radius: var(--radius-pill);
+      margin-bottom: 1.4rem;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--brand-saffron);
+      border-radius: 50%;
+      animation: pulse 2s ease infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.4; transform: scale(1.5); }
+    }
+
+    .page-hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 5vw, 3.4rem);
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      color: var(--brand-dark);
+      margin-bottom: 1rem;
+    }
+
+    .page-hero h1 em {
+      font-style: italic;
+      color: var(--brand-saffron);
+    }
+
+    .page-hero .lead {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--brand-muted);
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    /* ── MENU SECTION ── */
+    .menu-section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem 6rem;
+    }
+
+    /* Category filter tabs */
+    .menu-filters {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 3rem;
+      animation: fadeUp 0.7s 0.15s ease both;
+    }
+
+    .filter-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.5rem 1.2rem;
+      border-radius: var(--radius-pill);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.83rem;
+      font-weight: 500;
+      border: 1.5px solid rgba(26,18,11,0.12);
+      background: transparent;
+      color: var(--brand-muted);
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+
+    .filter-btn:hover,
+    .filter-btn.active {
+      background: var(--brand-saffron);
+      border-color: var(--brand-saffron);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(232, 96, 10, 0.3);
+    }
+
+    /* Menu root injection point */
+    #menuRoot {
+      animation: fadeUp 0.7s 0.25s ease both;
+    }
+
+    /* ── Category block ── */
+    .menu-category {
+      margin-bottom: 3.5rem;
+    }
+
+    .category-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.85rem;
+      border-bottom: 1px solid rgba(26,18,11,0.08);
+    }
+
+    .category-icon {
+      width: 44px; height: 44px;
+      background: rgba(232,96,10,0.10);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+
+    .category-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--brand-dark);
+    }
+
+    .category-count {
+      margin-left: auto;
+      font-size: 0.75rem;
+      color: var(--brand-muted);
+      background: rgba(26,18,11,0.05);
+      padding: 0.25rem 0.65rem;
+      border-radius: var(--radius-pill);
+    }
+
+    /* Item grid */
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1rem;
+    }
+
+    /* Individual item card */
+    .menu-item {
+      background: var(--brand-card-bg);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem 1.4rem;
+      border: 1.5px solid rgba(26,18,11,0.06);
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .menu-item::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(232,96,10,0.04) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity var(--transition);
+    }
+
+    .menu-item:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 36px rgba(26,18,11,0.10);
+      border-color: rgba(232,96,10,0.20);
+    }
+
+    .menu-item:hover::before { opacity: 1; }
+
+    .menu-item.selected {
+      border-color: var(--brand-saffron);
+      background: linear-gradient(135deg, rgba(232,96,10,0.06) 0%, #fff 60%);
+      box-shadow: 0 8px 28px rgba(232,96,10,0.16);
+    }
+
+    /* Checkbox visual */
+    .item-check {
+      flex-shrink: 0;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      border: 2px solid rgba(26,18,11,0.18);
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--transition);
+      margin-top: 2px;
+    }
+
+    .menu-item.selected .item-check {
+      background: var(--brand-saffron);
+      border-color: var(--brand-saffron);
+    }
+
+    .item-check-icon {
+      width: 10px; height: 10px;
+      opacity: 0;
+      transition: opacity var(--transition);
+    }
+
+    .menu-item.selected .item-check-icon { opacity: 1; }
+
+    .item-body { flex: 1; min-width: 0; }
+
+    .item-name {
+      font-size: 0.92rem;
+      font-weight: 500;
+      color: var(--brand-dark);
+      line-height: 1.4;
+      margin-bottom: 0.25rem;
+    }
+
+    .item-desc {
+      font-size: 0.78rem;
+      color: var(--brand-muted);
+      line-height: 1.5;
+    }
+
+    .item-badge {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.55rem;
+      border-radius: var(--radius-pill);
+      margin-top: 0.45rem;
+    }
+
+    .badge-veg {
+      background: rgba(34,139,34,0.10);
+      color: #228B22;
+    }
+
+    .badge-nonveg {
+      background: rgba(185,28,28,0.10);
+      color: #B91C1C;
+    }
+
+    .badge-popular {
+      background: rgba(232,96,10,0.10);
+      color: var(--brand-saffron);
+    }
+
+    /* ── STICKY SUMMARY BAR ── */
+    .summary-bar {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: var(--brand-dark);
+      color: #fff;
+      z-index: 200;
+      padding: 1rem 1.5rem;
+      transform: translateY(100%);
+      transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    .summary-bar.visible {
+      transform: translateY(0);
+    }
+
+    .summary-bar-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .summary-left {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+    }
+
+    .summary-count {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: var(--brand-turmeric);
+      line-height: 1;
+    }
+
+    .summary-label {
+      font-size: 0.82rem;
+      opacity: 0.65;
+      line-height: 1.4;
+    }
+
+    .summary-divider {
+      width: 1px;
+      height: 32px;
+      background: rgba(255,255,255,0.15);
+    }
+
+    .summary-items-preview {
+      font-size: 0.8rem;
+      opacity: 0.7;
+      max-width: 380px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.85rem 2rem;
+      border-radius: var(--radius-pill);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--brand-saffron);
+      color: #fff;
+      box-shadow: 0 4px 24px rgba(232, 96, 10, 0.35);
+    }
+
+    .btn-primary:hover {
+      background: #c94e00;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(232, 96, 10, 0.45);
+    }
+
+    .btn-ghost {
+      background: rgba(255,255,255,0.10);
+      color: #fff;
+      border: 1.5px solid rgba(255,255,255,0.20);
+    }
+
+    .btn-ghost:hover {
+      background: rgba(255,255,255,0.18);
+    }
+
+    /* ── FOOTER ── */
+    .site-footer {
+      background: var(--brand-dark);
+      color: rgba(255,255,255,0.65);
+      padding: 4rem 0 2rem;
+      margin-top: 0;
+    }
+
+    .footer-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem 3rem;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 3rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .footer-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.9rem;
+    }
+
+    .footer-grid p { font-size: 0.85rem; line-height: 1.7; }
+
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; }
+
+    .footer-links a {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      transition: color var(--transition);
+    }
+    .footer-links a:hover { color: var(--brand-turmeric); }
+
+    .footer-links a, .footer-grid a {
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      transition: color var(--transition);
+    }
+    .footer-grid a:hover { color: var(--brand-turmeric); }
+
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 1.5rem auto 0;
+      padding: 0 1.5rem;
+      font-size: 0.78rem;
+      opacity: 0.4;
+      text-align: center;
+    }
+
+    /* ── Animations ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .menu-grid { grid-template-columns: 1fr 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      .nav-links { display: none; flex-direction: column; width: 100%; background: var(--brand-cream); padding: 1rem; border-top: 1px solid rgba(0,0,0,0.06); }
+      .nav-links.open { display: flex; }
+      .nav-toggle { display: block; }
+      .menu-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .summary-bar-inner { flex-direction: column; align-items: flex-start; }
+      .summary-items-preview { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══ HEADER ══ -->
+  <header class="site-header">
+    <nav class="navbar container" aria-label="Primary">
+      <a class="brand" href="index.html">
+        <img src="logo.svg" alt="VocabFood logo" class="brand-logo">
+        <span>VocabFood</span>
+      </a>
+      <button class="nav-toggle" aria-label="Toggle Menu" onclick="this.closest('nav').querySelector('.nav-links').classList.toggle('open')">☰</button>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="how-it-works.html">How it Works</a>
+        <a class="active" href="menu.html">Menu</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="booking.html">Booking</a>
+        <a href="order-summary.html">Order Summary</a>
+        <a href="contact.html">Contact</a>
+        <a href="partner.html">Partner</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ══ MAIN ══ -->
+  <main>
+
+    <!-- Page Hero -->
+    <section class="page-hero" aria-labelledby="menu-heading">
+      <div class="page-hero-inner">
+        <div class="hero-eyebrow">North Indian Catering Menu</div>
+        <h1 id="menu-heading">Build your <em>perfect</em> event menu</h1>
+        <p class="lead">Select dishes from our curated categories to estimate your catering package and move to booking.</p>
+      </div>
+    </section>
+
+    <!-- Menu Content -->
+    <section class="menu-section" aria-label="Menu selection">
+      <div id="menuRoot">
+        <!-- JS populates this; fallback content below if JS is slow/unavailable -->
+        <noscript>
+          <p style="text-align:center;color:var(--brand-muted);padding:3rem 0;">
+            Please enable JavaScript to browse and select menu items.
+          </p>
+        </noscript>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ══ STICKY SUMMARY BAR ══ -->
+  <aside class="summary-bar" id="summaryBar" aria-live="polite" aria-label="Selected items summary">
+    <div class="summary-bar-inner">
+      <div class="summary-left">
+        <div>
+          <span class="summary-count" id="summaryCount">0</span>
+          <span class="summary-label" style="display:block;">items selected</span>
+        </div>
+        <div class="summary-divider"></div>
+        <span class="summary-items-preview" id="summaryPreview"></span>
+      </div>
+      <div style="display:flex;gap:0.75rem;flex-wrap:wrap;align-items:center;">
+        <button class="btn btn-ghost" onclick="clearSelection()">Clear all</button>
+        <a class="btn btn-primary" href="pricing.html" id="summaryProceed">
+          Get Pricing
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <path d="M1 7h12M7 1l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ══ FOOTER ══ -->
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <h3 class="footer-title">VocabFood</h3>
+        <p>Focus on Movement we handle meal</p>
+        <p>Office wadi Nagpur, Maharashtra, India</p>
+      </div>
+      <div>
+        <h3 class="footer-title">Quick Links</h3>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+          <li><a href="booking.html">Booking</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="footer-title">Contact</h3>
+        <p>Phone: <a href="tel:7028255991">7028255991</a></p>
+        <p>Email: <a href="mailto:vocabfood@gmail.com">vocabfood@gmail.com</a></p>
+        <p>Early support: <a href="mailto:ashutoshyadav@gmail.com">ashutoshyadav@gmail.com</a></p>
+        <p><a href="https://wa.me/917028255991" target="_blank" rel="noopener">WhatsApp Support</a></p>
+      </div>
+    </div>
+    <div class="container footer-bottom">© 2026 VocabFood. All rights reserved.</div>
+  </footer>
+
+  <!-- Page-level JS for the summary bar; menu items are rendered by script.js -->
+  <script>
+    // ── Nav toggle ──
+    document.querySelector('.nav-toggle')?.addEventListener('click', function() {
+      this.closest('nav').querySelector('.nav-links').classList.toggle('open');
+    });
+
+    // ── Summary bar integration ──
+    // script.js populates #menuRoot with items. We observe DOM mutations
+    // and also expose helper functions it can call.
+
+    const summaryBar   = document.getElementById('summaryBar');
+    const summaryCount = document.getElementById('summaryCount');
+    const summaryPreview = document.getElementById('summaryPreview');
+
+    function updateSummaryBar() {
+      const selected = document.querySelectorAll('.menu-item.selected');
+      const count = selected.length;
+      summaryCount.textContent = count;
+
+      if (count > 0) {
+        summaryBar.classList.add('visible');
+        // Build a preview list of names
+        const names = Array.from(selected)
+          .map(el => el.querySelector('.item-name')?.textContent?.trim())
+          .filter(Boolean);
+        summaryPreview.textContent = names.slice(0, 5).join(' · ') + (names.length > 5 ? ` +${names.length - 5} more` : '');
+        // Persist to sessionStorage so pricing/booking pages can read it
+        try { sessionStorage.setItem('vocabfood_selected', JSON.stringify(names)); } catch(e) {}
+      } else {
+        summaryBar.classList.remove('visible');
+        summaryPreview.textContent = '';
+        try { sessionStorage.removeItem('vocabfood_selected'); } catch(e) {}
+      }
+    }
+
+    function clearSelection() {
+      document.querySelectorAll('.menu-item.selected').forEach(el => el.classList.remove('selected'));
+      updateSummaryBar();
+    }
+
+    // Expose globally so script.js can call after toggling items
+    window.vocabUpdateSummary = updateSummaryBar;
+
+    // Delegate click on menu items (works whether script.js already rendered or will render)
+    document.getElementById('menuRoot').addEventListener('click', function(e) {
+      const item = e.target.closest('.menu-item');
+      if (!item) return;
+      item.classList.toggle('selected');
+      updateSummaryBar();
+    });
+
+    // Observe for DOM changes in case script.js adds items asynchronously
+    new MutationObserver(updateSummaryBar)
+      .observe(document.getElementById('menuRoot'), { childList: true, subtree: true });
+  </script>
+
+  <script src="script.js"></script>
+</body>
+</html>
