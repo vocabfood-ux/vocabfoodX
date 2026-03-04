@@ -67,11 +67,18 @@ function getTierBasePrice(headcount) {
 function getMultiStepBookingState(form) {
   const formData = new FormData(form);
   const headcount = Number(formData.get('headcount') || 0);
+  
+  // ✅ FIXED: Capture selected menu items
+  const selectedMenu = [...form.querySelectorAll('input[name="menuItems"]:checked')].map(input => input.value);
+  
   const addOns = [...form.querySelectorAll('input[name="addons"]:checked')].map((input) => ({
     key: input.value,
     label: input.dataset.label,
     price: Number(input.dataset.price) || 0
   }));
+
+  // ✅ FIXED: Capture distance if input exists
+  const distanceKm = Number(formData.get('distanceKm') || 0);
 
   const basePerPlate = getTierBasePrice(headcount);
   const addOnPerPlate = addOns.reduce((sum, addOn) => sum + addOn.price, 0);
@@ -84,6 +91,8 @@ function getMultiStepBookingState(form) {
     time: formData.get('time') || '',
     location: formData.get('location') || '',
     headcount,
+    distanceKm, // ✅ ADDED
+    selectedMenu, // ✅ ADDED
     addOns,
     basePerPlate,
     addOnPerPlate,
@@ -125,6 +134,12 @@ function setupBookingPage() {
   const renderReview = () => {
     const state = getMultiStepBookingState(form);
     const addOnNames = state.addOns.map((item) => item.label).join(', ') || 'No add-ons selected';
+    
+    // ✅ ADDED: Show selected menu items in review
+    const selectedMenuNames = state.selectedMenu
+      .map((id) => MENU_ITEMS.find((i) => i.id === id)?.name || id.replaceAll('_', ' '))
+      .filter(Boolean)
+      .join(', ') || 'None selected';
 
     reviewSummary.innerHTML = `
       <h3>Booking Review</h3>
@@ -132,7 +147,9 @@ function setupBookingPage() {
       <p><strong>Event Date:</strong> ${state.date || '-'}</p>
       <p><strong>Event Time:</strong> ${state.time || '-'}</p>
       <p><strong>Event Location:</strong> ${state.location || '-'}</p>
+      <p><strong>Distance:</strong> ${state.distanceKm || 0} km</p>
       <p><strong>Guest Count:</strong> ${state.headcount || 0}</p>
+      <p><strong>Selected Menu:</strong> ${selectedMenuNames}</p>
       <p><strong>Selected Add-ons:</strong> ${addOnNames}</p>
       <p><strong>Base Price / Plate:</strong> ${currency(state.basePerPlate)}</p>
       <p><strong>Add-ons / Plate:</strong> ${currency(state.addOnPerPlate)}</p>
@@ -197,14 +214,28 @@ function setupBookingPage() {
 
       const response = await fetch('https://script.google.com/macros/s/AKfycbzYKVnmtJ4QsHRRrhlzRZVePc1Yrx_1tlzYPbnP-rd-L2IyCaToV3SMorrbAr6CE2FmqQ/exec', {
         method: 'POST',
-        body: new URLSearchParams(payload)
+        body: new URLSearchParams(payload),
+        redirect: 'follow'
       });
 
-      const text = await response.text();
+      const result = await response.text();
 
-      if (!response.ok || text !== "success") {
-        throw new Error("Server error");
+      if (result.trim() !== "success") {
+        throw new Error("Server did not return success");
       }
+
+      // ✅ FIXED: Store booking data in localStorage for summary page
+      const breakdown = {
+        base: state.basePerPlate * state.headcount,
+        menuCost: 0, // Add logic if menu items have separate pricing
+        subtotal: state.finalTotal,
+        discount: 0, // Add discount logic if needed
+        surcharge: 0, // Add surcharge logic if needed
+        distanceCharge: state.distanceKm * 10, // Example: ₹10 per km
+        total: state.finalTotal + (state.distanceKm * 10)
+      };
+      
+      localStorage.setItem('vocabfoodBooking', JSON.stringify({ state, breakdown }));
 
       alert("Booking request submitted successfully!");
       form.reset();
@@ -234,42 +265,54 @@ function setupSummaryPage() {
     return;
   }
 
-  const { state, breakdown } = JSON.parse(stored);
-  const selectedMenuNames = state.selectedMenu
-    .map((id) => MENU_ITEMS.find((i) => i.id === id)?.name || id.replaceAll('_', ' '))
-    .filter(Boolean)
-    .join(', ') || 'None selected';
+  try {
+    const { state, breakdown } = JSON.parse(stored);
+    
+    // ✅ FIXED: Defensive checks for missing data
+    if (!state || !breakdown) {
+      summaryRoot.innerHTML = '<p>Invalid booking data. Please complete the booking again.</p>';
+      return;
+    }
 
-  summaryRoot.innerHTML = `
-    <div class="card">
-      <h3>Booking Details</h3>
-      <p><strong>Name:</strong> ${state.name}</p>
-      <p><strong>Phone:</strong> ${state.phone}</p>
-      <p><strong>Email:</strong> ${state.email}</p>
-      <p><strong>Event:</strong> ${state.eventType} on ${state.date} at ${state.time}</p>
-      <p><strong>Location:</strong> ${state.location} (${state.distanceKm} km)</p>
-      <p><strong>Headcount:</strong> ${state.headcount}</p>
-      <p><strong>Menu:</strong> ${selectedMenuNames}</p>
-    </div>
-    <div class="card">
-      <h3>Cost Breakdown</h3>
-      <ul class="cost-list">
-        <li>Base Cost: ${currency(breakdown.base)}</li>
-        <li>Menu Cost: ${currency(breakdown.menuCost)}</li>
-        <li>Subtotal: ${currency(breakdown.subtotal)}</li>
-        <li>Discount: -${currency(breakdown.discount)}</li>
-        <li>Event Surcharge: ${currency(breakdown.surcharge)}</li>
-        <li>Distance Charge: ${currency(breakdown.distanceCharge)}</li>
-        <li><strong>Total: ${currency(breakdown.total)}</strong></li>
-      </ul>
-      <button class="btn" id="confirmOrderBtn" type="button">Confirm Order</button>
-      <p class="notice" id="confirmMsg"></p>
-    </div>`;
+    const selectedMenuNames = (state.selectedMenu || [])
+      .map((id) => MENU_ITEMS.find((i) => i.id === id)?.name || id.replaceAll('_', ' '))
+      .filter(Boolean)
+      .join(', ') || 'None selected';
 
-  document.querySelector('#confirmOrderBtn')?.addEventListener('click', () => {
-    const msg = document.querySelector('#confirmMsg');
-    if (msg) msg.textContent = 'Order confirmed! Our team will contact you shortly.';
-  });
+    summaryRoot.innerHTML = `
+      <div class="card">
+        <h3>Booking Details</h3>
+        <p><strong>Name:</strong> ${state.name || '-'}</p>
+        <p><strong>Phone:</strong> ${state.phone || '-'}</p>
+        <p><strong>Email:</strong> ${state.email || '-'}</p>
+        <p><strong>Event:</strong> ${state.eventType || '-'} on ${state.date || '-'} at ${state.time || '-'}</p>
+        <p><strong>Location:</strong> ${state.location || '-'} (${state.distanceKm || 0} km)</p>
+        <p><strong>Headcount:</strong> ${state.headcount || 0}</p>
+        <p><strong>Menu:</strong> ${selectedMenuNames}</p>
+      </div>
+      <div class="card">
+        <h3>Cost Breakdown</h3>
+        <ul class="cost-list">
+          <li>Base Cost: ${currency(breakdown.base || 0)}</li>
+          <li>Menu Cost: ${currency(breakdown.menuCost || 0)}</li>
+          <li>Subtotal: ${currency(breakdown.subtotal || 0)}</li>
+          <li>Discount: -${currency(breakdown.discount || 0)}</li>
+          <li>Event Surcharge: ${currency(breakdown.surcharge || 0)}</li>
+          <li>Distance Charge: ${currency(breakdown.distanceCharge || 0)}</li>
+          <li><strong>Total: ${currency(breakdown.total || 0)}</strong></li>
+        </ul>
+        <button class="btn" id="confirmOrderBtn" type="button">Confirm Order</button>
+        <p class="notice" id="confirmMsg"></p>
+      </div>`;
+
+    document.querySelector('#confirmOrderBtn')?.addEventListener('click', () => {
+      const msg = document.querySelector('#confirmMsg');
+      if (msg) msg.textContent = 'Order confirmed! Our team will contact you shortly.';
+    });
+  } catch (error) {
+    console.error("Error loading summary:", error);
+    summaryRoot.innerHTML = '<p>Error loading booking details. Please try again.</p>';
+  }
 }
 
 function setupStandaloneMenuPage() {
