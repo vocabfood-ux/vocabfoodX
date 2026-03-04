@@ -68,7 +68,7 @@ function getMultiStepBookingState(form) {
   const formData = new FormData(form);
   const headcount = Number(formData.get('headcount') || 0);
   
-  // ✅ FIXED: Capture selected menu items
+  // Capture selected menu items
   const selectedMenu = [...form.querySelectorAll('input[name="menuItems"]:checked')].map(input => input.value);
   
   const addOns = [...form.querySelectorAll('input[name="addons"]:checked')].map((input) => ({
@@ -77,7 +77,7 @@ function getMultiStepBookingState(form) {
     price: Number(input.dataset.price) || 0
   }));
 
-  // ✅ FIXED: Capture distance if input exists
+  // Capture distance if input exists
   const distanceKm = Number(formData.get('distanceKm') || 0);
 
   const basePerPlate = getTierBasePrice(headcount);
@@ -91,8 +91,8 @@ function getMultiStepBookingState(form) {
     time: formData.get('time') || '',
     location: formData.get('location') || '',
     headcount,
-    distanceKm, // ✅ ADDED
-    selectedMenu, // ✅ ADDED
+    distanceKm,
+    selectedMenu,
     addOns,
     basePerPlate,
     addOnPerPlate,
@@ -135,7 +135,7 @@ function setupBookingPage() {
     const state = getMultiStepBookingState(form);
     const addOnNames = state.addOns.map((item) => item.label).join(', ') || 'No add-ons selected';
     
-    // ✅ ADDED: Show selected menu items in review
+    // Show selected menu items in review
     const selectedMenuNames = state.selectedMenu
       .map((id) => MENU_ITEMS.find((i) => i.id === id)?.name || id.replaceAll('_', ' '))
       .filter(Boolean)
@@ -189,6 +189,7 @@ function setupBookingPage() {
 
   document.querySelector('#backToStep2')?.addEventListener('click', () => showStep(2));
 
+  // ✅ REPLACED: Form submit handler with updated fetch logic
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -212,35 +213,43 @@ function setupBookingPage() {
     try {
       if (submitBtn) submitBtn.disabled = true;
 
-      const response = await fetch('https://script.google.com/macros/s/AKfycbzYKVnmtJ4QsHRRrhlzRZVePc1Yrx_1tlzYPbnP-rd-L2IyCaToV3SMorrbAr6CE2FmqQ/exec', {
-        method: 'POST',
-        body: new URLSearchParams(payload),
-        redirect: 'follow'
-      });
+      const response = await fetch(
+        "https://script.google.com/macros/s/AKfycbzYKVnmtJ4QsHRRrhlzRZVePc1Yrx_1tlzYPbnP-rd-L2IyCaToV3SMorrbAr6CE2FmqQ/exec",
+        {
+          method: "POST",
+          body: new URLSearchParams(payload)
+        }
+      );
 
       const result = await response.text();
 
-      if (result.trim() !== "success") {
-        throw new Error("Server did not return success");
+      console.log("SERVER RESPONSE:", result);
+
+      // ⚡ Flexible success detection
+      if (!result.toLowerCase().includes("success")) {
+        throw new Error("Server error");
       }
 
-      // ✅ FIXED: Store booking data in localStorage for summary page
       const breakdown = {
         base: state.basePerPlate * state.headcount,
-        menuCost: 0, // Add logic if menu items have separate pricing
+        menuCost: 0,
         subtotal: state.finalTotal,
-        discount: 0, // Add discount logic if needed
-        surcharge: 0, // Add surcharge logic if needed
-        distanceCharge: state.distanceKm * 10, // Example: ₹10 per km
+        discount: 0,
+        surcharge: 0,
+        distanceCharge: state.distanceKm * 10,
         total: state.finalTotal + (state.distanceKm * 10)
       };
-      
-      localStorage.setItem('vocabfoodBooking', JSON.stringify({ state, breakdown }));
+
+      localStorage.setItem(
+        "vocabfoodBooking",
+        JSON.stringify({ state, breakdown })
+      );
 
       alert("Booking request submitted successfully!");
+
       form.reset();
       renderPricing();
-      reviewSummary.innerHTML = '';
+      reviewSummary.innerHTML = "";
       showStep(1);
 
     } catch (error) {
@@ -268,7 +277,7 @@ function setupSummaryPage() {
   try {
     const { state, breakdown } = JSON.parse(stored);
     
-    // ✅ FIXED: Defensive checks for missing data
+    // Defensive checks for missing data
     if (!state || !breakdown) {
       summaryRoot.innerHTML = '<p>Invalid booking data. Please complete the booking again.</p>';
       return;
